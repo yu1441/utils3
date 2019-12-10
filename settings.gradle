@@ -1,0 +1,2 @@
+include ':app', ':net', ':yurl', ':utils', ':ycrash'
+rootProject.name='kotlinapp'

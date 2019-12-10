@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/index1"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/activity_mian_1_2"
+        android:title="首页" />
+    <item
+        android:id="@+id/index2"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/activity_mian_2_2"
+        android:title="书籍" />
+    <item
+        android:id="@+id/index3"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/activity_mian_3_2"
+        android:title="消息" />
+
+    <item
+        android:id="@+id/index4"
+        android:enabled="true"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/activity_mian_4_2"
+        android:title="我的" />
+</menu>

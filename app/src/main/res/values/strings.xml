@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">kotlinapp</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_1">Activity1</string>
+    <string name="title_activity_0202">Activity0202</string>
+</resources>
