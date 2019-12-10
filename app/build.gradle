@@ -46,7 +46,7 @@ dependencies {
     implementation project(':ycrash')
 
     //recyclerview，对应的是com.android.support:recyclerview-v7:28.0.2
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //TextInputLayout，对应的是com.android.support:design:28.0.2
     implementation 'com.google.android.material:material:1.0.0'
