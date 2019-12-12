@@ -6,9 +6,11 @@ import com.yujing.kotlinapp.App;
 import com.yujing.url.YObjectListener;
 import com.yujing.url.YUrlAndroidObject;
 import com.yujing.utils.YConvert;
+import com.yujing.utils.YConvertBytes;
 import com.yujing.utils.YSave;
 import com.yujing.utils.YToast;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,5 +115,39 @@ public class Presenter07<T> {
         YSave.setUseCache(false);
         byte[] value = YSave.get(App.Companion.get(), "aaa", byte[].class);
         YToast.show(App.Companion.get(), new String(value));
+    }
+
+    public void getTest1() {
+        int i = 654;
+        byte[] bi = YConvertBytes.intToBytes(i);
+        byte[] bi2 = YConvertBytes.intTo2Bytes(i);
+        Log.d("000", Arrays.toString(bi));
+        Log.d("000", Arrays.toString(bi2));
+        int i1 = YConvertBytes.bytesToInt(bi);
+        int i2 = YConvertBytes.bytes2ToInt(bi2);
+        Log.d("000", "i1=" + i1);
+        Log.d("000", "i2=" + i2);
+        cFloat();
+        cDouble();
+    }
+
+    public void cFloat() {
+        float i = 654545.5646f;
+        byte[] bi = YConvertBytes.floatToBytes(i);
+        Log.d("000", Arrays.toString(bi));
+        float i1 = YConvertBytes.bytesToFloat(bi);
+        Log.d("000", "i1=" + i1);
+    }
+
+    public void cDouble() {
+        double i = 6549684646.1238928374d;
+        byte[] bi = YConvertBytes.doubleToBytes(i);
+        Log.d("000", Arrays.toString(bi));
+        double i1 = YConvertBytes.bytesToDouble(bi);
+        Log.d("000", "i1=" + i1);
+    }
+
+    public void getTest2() {
+
     }
 }

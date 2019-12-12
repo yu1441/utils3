@@ -19,8 +19,8 @@ class Activity0701 : BaseActivity() {
         button4.setOnClickListener { presenter.getType3()}
         button5.setOnClickListener { presenter.getYSave1()}
         button6.setOnClickListener { presenter.getYSave2()}
-        button7.setOnClickListener { }
-        button8.setOnClickListener { }
+        button7.setOnClickListener { presenter.getTest1()}
+        button8.setOnClickListener { presenter.getTest2()}
     }
 
 

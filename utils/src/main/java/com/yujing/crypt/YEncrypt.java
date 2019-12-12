@@ -29,11 +29,11 @@ public class YEncrypt {
 		return new String(decode(Base64.decode(psw), passWord));
 	}
 
-	private byte[] intTobyte(int int65535) {// 只能是0到65535之间的数不能为负数
+	private byte[] intToByte(int int65535) {// 只能是0到65535之间的数不能为负数
 		return new byte[] { (byte) (int65535 >> 8), (byte) (int65535 % 256) };
 	}
 
-	private int byteToint(byte[] byte65535) {
+	private int byteToInt(byte[] byte65535) {
 		return ((byte65535[0] & 0xFF) << 8) + (byte65535[1] & 0xFF);// byte65535[0]&0xFF把byte转0-255
 	}
 
@@ -42,10 +42,10 @@ public class YEncrypt {
 		int key1 = (int) (Math.random() * 65535);
 		int key2 = (int) (Math.random() * 65535);
 		byte[] bytes = new byte[byteArry.length + 6];
-		bytes[2] = intTobyte(key1)[0];
-		bytes[3] = intTobyte(key1)[1];
-		bytes[4] = intTobyte(key2)[0];
-		bytes[5] = intTobyte(key2)[1];
+		bytes[2] = intToByte(key1)[0];
+		bytes[3] = intToByte(key1)[1];
+		bytes[4] = intToByte(key2)[0];
+		bytes[5] = intToByte(key2)[1];
 		byte[] key3 = Double.toString(Math.sqrt(key2 / (key1 + 0.1))).getBytes();
 		byte[] key4 = Double.toString(Math.sqrt(key1 / (key2 + 0.1))).getBytes();
 		long xy = key1 + key2;// 校验位
@@ -54,8 +54,8 @@ public class YEncrypt {
 			bytes[i + 6] = (byte) ((int) byteArry[i] + (key3[i % key3.length] * key4[i % key4.length] + key3[(i + 1) % key3.length] + key3[(i + 3) % key3.length] + key3[(i + 5) % key3.length] + key3[(i + 7) % key3.length] + key4[(i + 2) % key4.length] + key4[(i + 4) % key4.length] + key4[(i + 6) % key4.length] + key4[(i + 8) % key4.length]));
 		}
 		xy = Math.abs(xy);
-		bytes[0] = intTobyte((int) xy % 65535)[0];
-		bytes[1] = intTobyte((int) xy % 65535)[1];
+		bytes[0] = intToByte((int) xy % 65535)[0];
+		bytes[1] = intToByte((int) xy % 65535)[1];
 		return bytes;
 	}
 
@@ -65,10 +65,10 @@ public class YEncrypt {
 		int key1 = (int) (Math.random() * 65535);
 		int key2 = (int) (Math.random() * 65535);
 		byte[] bytes = new byte[byteArry.length + 6];
-		bytes[2] = intTobyte(key1)[0];
-		bytes[3] = intTobyte(key1)[1];
-		bytes[4] = intTobyte(key2)[0];
-		bytes[5] = intTobyte(key2)[1];
+		bytes[2] = intToByte(key1)[0];
+		bytes[3] = intToByte(key1)[1];
+		bytes[4] = intToByte(key2)[0];
+		bytes[5] = intToByte(key2)[1];
 		byte[] key3 = Double.toString(Math.sqrt(key2 / (key1 + 0.1))).getBytes();
 		byte[] key4 = Double.toString(Math.sqrt(key1 / (key2 + 0.1))).getBytes();
 		long xy = key1 + key2;// 校验位
@@ -77,16 +77,16 @@ public class YEncrypt {
 			bytes[i + 6] = (byte) ((int) byteArry[i] + p[i % p.length] + (key3[i % key3.length] * key4[i % key4.length] + key3[(i + 1) % key3.length] + key3[(i + 3) % key3.length] + key3[(i + 5) % key3.length] + key3[(i + 7) % key3.length] + key4[(i + 2) % key4.length] + key4[(i + 4) % key4.length] + key4[(i + 6) % key4.length] + key4[(i + 8) % key4.length]));
 		}
 		xy = Math.abs(xy);
-		bytes[0] = intTobyte((int) xy % 65535)[0];
-		bytes[1] = intTobyte((int) xy % 65535)[1];
+		bytes[0] = intToByte((int) xy % 65535)[0];
+		bytes[1] = intToByte((int) xy % 65535)[1];
 		return bytes;
 	}
 
 	// 解密
 	public byte[] decode(byte[] byteArry) {
-		int xy = byteToint(new byte[] { byteArry[0], byteArry[1] });// 校验位
-		int key1 = byteToint(new byte[] { byteArry[2], byteArry[3] });
-		int key2 = byteToint(new byte[] { byteArry[4], byteArry[5] });
+		int xy = byteToInt(new byte[] { byteArry[0], byteArry[1] });// 校验位
+		int key1 = byteToInt(new byte[] { byteArry[2], byteArry[3] });
+		int key2 = byteToInt(new byte[] { byteArry[4], byteArry[5] });
 		byte[] key3 = Double.toString(Math.sqrt(key2 / (key1 + 0.1))).getBytes();
 		byte[] key4 = Double.toString(Math.sqrt(key1 / (key2 + 0.1))).getBytes();
 		byte[] bytes = new byte[byteArry.length - 6];
@@ -106,9 +106,9 @@ public class YEncrypt {
 	// 解密
 	public byte[] decode(byte[] byteArry, String passWord) {
 		byte[] p = passWord.getBytes();
-		int xy = byteToint(new byte[] { byteArry[0], byteArry[1] });// 校验位
-		int key1 = byteToint(new byte[] { byteArry[2], byteArry[3] });
-		int key2 = byteToint(new byte[] { byteArry[4], byteArry[5] });
+		int xy = byteToInt(new byte[] { byteArry[0], byteArry[1] });// 校验位
+		int key1 = byteToInt(new byte[] { byteArry[2], byteArry[3] });
+		int key2 = byteToInt(new byte[] { byteArry[4], byteArry[5] });
 		byte[] key3 = Double.toString(Math.sqrt(key2 / (key1 + 0.1))).getBytes();
 		byte[] key4 = Double.toString(Math.sqrt(key1 / (key2 + 0.1))).getBytes();
 		byte[] bytes = new byte[byteArry.length - 6];

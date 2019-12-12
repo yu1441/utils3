@@ -3,6 +3,7 @@ package com.yujing.kotlinapp
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.yujing.utils.YConvert
 import com.yujing.ycrash.YCrash
 
 class App : Application() {
@@ -17,7 +18,6 @@ class App : Application() {
                 if (field == null) field = App()
                 return field
             }
-
         @Synchronized
         fun get(): App {
             return instance!!

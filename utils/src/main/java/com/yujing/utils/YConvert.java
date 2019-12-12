@@ -42,65 +42,10 @@ import java.util.Objects;
 
 /**
  * 各种类型转换
+ * @author yujing 2019年12月12日14:09:50
  */
 @SuppressWarnings("unused")
 public class YConvert {
-    /**
-     * 将一个2个字节数组转换为int。
-     *
-     * @param b b
-     * @return int
-     */
-    public static int bytesTwo2Int(byte[] b) {
-        int a1 = b[0] & 0xff;
-        int a2 = (b[1] & 0xff) * 256;
-        return (a1 + a2);
-    }
-
-    /**
-     * 将一个4个字节数组转换为int。
-     *
-     * @param b b
-     * @return int
-     */
-    public static int bytesFour2Int(byte[] b) {
-        int a1 = b[0] & 0xff;
-        int a2 = (b[1] & 0xff) * 256;
-        int a3 = (b[2] & 0xff) * 65536;
-        int a4 = (b[3] & 0xff) * 16777216;
-        return (a1 + a2 + a3 + a4);
-    }
-
-    /**
-     * long2Bytes
-     *
-     * @param num num
-     * @return byte[]
-     */
-    public static byte[] long2Bytes(long num) {
-        byte[] byteNum = new byte[8];
-        for (int ix = 0; ix < 8; ++ix) {
-            int offset = 64 - (ix + 1) * 8;
-            byteNum[ix] = (byte) ((num >> offset) & 0xff);
-        }
-        return byteNum;
-    }
-
-    /**
-     * int2Bytes
-     *
-     * @param num num
-     * @return byte[]
-     */
-    public static byte[] int2Bytes(int num) {
-        byte[] byteNum = new byte[4];
-        for (int ix = 0; ix < 4; ++ix) {
-            int offset = 32 - (ix + 1) * 8;
-            byteNum[ix] = (byte) ((num >> offset) & 0xff);
-        }
-        return new byte[]{byteNum[3], byteNum[2]};
-    }
-
     /**
      * bytesToHexString
      *
