@@ -50,24 +50,23 @@ public class YShow extends Dialog {
         LinearLayout linearLayout = getView();
         setContentView(linearLayout);// 设置布局view
         Window window = getWindow();
-        if (window != null)
-            window.setGravity(Gravity.CENTER);// 设置Gravity居中
-        //设置 window的Background为圆角
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        int strokeWidth = 1; // 1dp 边框宽度
-        int roundRadius = 5; // 6dp 圆角半径
-        int strokeColor = Color.parseColor("#303A89FF");//边框颜色
-        int fillColor = Color.parseColor("#A0000000");//内部填充颜色
-        gradientDrawable.setColor(fillColor);
-        gradientDrawable.setCornerRadius(dip2px(getContext(), roundRadius));
-        gradientDrawable.setStroke(dip2px(getContext(), strokeWidth), strokeColor);
         if (window != null) {
-            window.setBackgroundDrawable(gradientDrawable);
+            window.setGravity(Gravity.CENTER);// 设置Gravity居中
             WindowManager.LayoutParams lp = window.getAttributes();
             lp.alpha = 0.9f;// 透明度
             lp.dimAmount = 0f;// 模糊度
             //lp.width=dip2px(getContext(), 90);
-            window.setAttributes(lp);
+            window.setAttributes(lp);//应用设置
+            //设置 window的Background为圆角
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            int strokeWidth = 1; // 1dp 边框宽度
+            int roundRadius = 5; // 6dp 圆角半径
+            int strokeColor = Color.parseColor("#303A89FF");//边框颜色
+            int fillColor = Color.parseColor("#A0000000");//内部填充颜色
+            gradientDrawable.setColor(fillColor);
+            gradientDrawable.setCornerRadius(dip2px(getContext(), roundRadius));
+            gradientDrawable.setStroke(dip2px(getContext(), strokeWidth), strokeColor);
+            window.setBackgroundDrawable(gradientDrawable);
         }
         setCancelable(isCancelable);// 是否允许按返回键
         //找到mProgressBar
@@ -268,5 +267,17 @@ public class YShow extends Dialog {
     private static int dip2px(Context context, float dpValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    @Override
+    public void show() {
+        //主要作用是焦点失能和焦点恢复，保证在弹出dialog时不会弹出虚拟按键且事件不会穿透。
+        if (this.getWindow() != null) {
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            super.show();
+            this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
     }
 }
