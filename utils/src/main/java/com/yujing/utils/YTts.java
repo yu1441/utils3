@@ -23,7 +23,18 @@ public class YTts {
 
     public YTts(final Context context) {
         textToSpeech = new TextToSpeech(context, status -> {
-            //TTS语音不支持
+            if (status == TextToSpeech.SUCCESS) {
+                int result = textToSpeech.setLanguage(Locale.CHINA);
+                Log.e(TAG, "TTS状态:" + result);
+                if (result == TextToSpeech.LANG_MISSING_DATA) {
+                    Log.e(TAG, "语言包丢失");
+                    initSuccess = false;
+                } else if (result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e(TAG, "语音不支持");
+                    initSuccess = false;
+                }
+                initSuccess = true;
+            }
         });
     }
 
