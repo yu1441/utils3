@@ -19,6 +19,7 @@ public class YTts {
     private TextToSpeech textToSpeech; // TTS对象
     private float speechRate = 1.0f;//速度
     private float pitch = 1.0f;//音调
+    private boolean initSuccess = false;//初始化状态
 
     public YTts(final Context context) {
         textToSpeech = new TextToSpeech(context, status -> {
@@ -33,16 +34,23 @@ public class YTts {
                 Log.e(TAG, "TTS状态:" + result);
                 if (result == TextToSpeech.LANG_MISSING_DATA) {
                     Log.e(TAG, "语言包丢失");
-                    initListener.value(false);
-                    return;
+                    initSuccess = false;
                 } else if (result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Log.e(TAG, "语音不支持");
-                    initListener.value(false);
-                    return;
+                    initSuccess = false;
                 }
-                initListener.value(true);
+                initSuccess = true;
             }
+            initListener.value(initSuccess);
         });
+    }
+
+    /**
+     * 获取初始化状态
+     * @return 是否初始化成功
+     */
+    public boolean isInitSuccess() {
+        return initSuccess;
     }
 
     /**
