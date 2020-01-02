@@ -20,7 +20,7 @@ class Activity0701 : BaseActivity() {
         button5.setOnClickListener { presenter.getYSave1()}
         button6.setOnClickListener { presenter.getYSave2()}
         button7.setOnClickListener { presenter.getTest1()}
-        button8.setOnClickListener { presenter.getTest2()}
+        button8.setOnClickListener { presenter.getTest2(this)}
     }
 
 

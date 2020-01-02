@@ -1,5 +1,6 @@
 package com.yujing.kotlinapp.activity.page07;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.yujing.kotlinapp.App;
@@ -8,6 +9,7 @@ import com.yujing.url.YUrlAndroidObject;
 import com.yujing.utils.YConvert;
 import com.yujing.utils.YConvertBytes;
 import com.yujing.utils.YSave;
+import com.yujing.utils.YShow;
 import com.yujing.utils.YToast;
 
 import java.util.Arrays;
@@ -20,7 +22,6 @@ public class Presenter07<T> {
         String url = "http://39.106.6.5:8090/QrUser/getQrUser";
         Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put("year", "2019");
-
         YUrlAndroidObject.create().post(url, paramsMap, new YObjectListener<Status07<User07>>() {
             @Override
             public void success(byte[] bytes, Status07<User07> value) {
@@ -147,7 +148,9 @@ public class Presenter07<T> {
         Log.d("000", "i1=" + i1);
     }
 
-    public void getTest2() {
-
+    public void getTest2(Activity activity) {
+//        YShow.create(activity).setMessage1("11111").setMessage2("22").setCanCancel(true).setFullScreen(false).show();
+        YShow.setDefaultFullScreen(true);
+        YShow.show(activity,"1111","22222",false,false);
     }
 }

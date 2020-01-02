@@ -25,23 +25,30 @@ import androidx.annotation.ColorInt;
  */
 @SuppressWarnings({"unused"})
 public class YShow extends Dialog {
+    private static boolean defaultFullScreen = false;
     private Activity activity;
-    private ProgressBar mProgressBar;
+    private ProgressBar mProgressBar;//进度
     private String message1;
     private String message2;
     private TextView textView1;
     private TextView textView2;
-    private boolean isCancelable = true;
+    private boolean canCancel = true;//可以按返回键
+    private Boolean fullScreen = false;//全屏
     @SuppressLint("StaticFieldLeak")
     private static YShow yDialog = null;
 
-    // 构造函数，主题android.R.style.Theme_Holo_Light_Dialog_NoActionBar,Theme_DeviceDefault_Dialog_NoActionBar,Theme_Material_Dialog_NoActionBar
-    private YShow(Activity activity, String text, String text2, boolean isCancelable) {
+    private YShow(Activity activity) {
         super(activity, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        this.activity = activity;
+    }
+
+    // 构造函数，主题android.R.style.Theme_Holo_Light_Dialog_NoActionBar,Theme_DeviceDefault_Dialog_NoActionBar,Theme_Material_Dialog_NoActionBar
+    private YShow(Activity activity, String text, String text2, boolean canCancel) {
+        super(activity, android.R.style.Theme_DeviceDefault_Dialog_NoActionBar);
+        this.activity = activity;
         this.message1 = text;
         this.message2 = text2;
-        this.isCancelable = isCancelable;
-        this.activity = activity;
+        this.canCancel = canCancel;
     }
 
     @Override
@@ -68,7 +75,7 @@ public class YShow extends Dialog {
             gradientDrawable.setStroke(dip2px(getContext(), strokeWidth), strokeColor);
             window.setBackgroundDrawable(gradientDrawable);
         }
-        setCancelable(isCancelable);// 是否允许按返回键
+        setCancelable(canCancel);// 是否允许按返回键
         //找到mProgressBar
         mProgressBar = (ProgressBar) linearLayout.getChildAt(0);
         //找到textView1
@@ -78,7 +85,6 @@ public class YShow extends Dialog {
         setMessage1(message1);
         setMessage2(message2);
         setCanceledOnTouchOutside(false);// 触摸屏幕其他区域不关闭对话框
-
     }
 
     //获取布局
@@ -123,7 +129,7 @@ public class YShow extends Dialog {
         return linearLayout;
     }
 
-    public void setMessage1(String message) {
+    public YShow setMessage1(String message) {
         this.message1 = message;
         if (textView1 != null) {
             textView1.setText(this.message1);
@@ -133,9 +139,10 @@ public class YShow extends Dialog {
                 textView1.setVisibility(View.VISIBLE);
             }
         }
+        return this;
     }
 
-    public void setMessage2(String message) {
+    public YShow setMessage2(String message) {
         this.message2 = message;
         if (textView2 != null) {
             textView2.setText(this.message2);
@@ -145,6 +152,24 @@ public class YShow extends Dialog {
                 textView2.setVisibility(View.VISIBLE);
             }
         }
+        return this;
+    }
+
+    public YShow setCanCancel(boolean canCancel) {
+        this.canCancel = canCancel;
+        return this;
+    }
+
+    public YShow setFullScreen(Boolean fullScreen) {
+        this.fullScreen = fullScreen;
+        return this;
+    }
+
+    public YShow setProgressBarColor(@ColorInt int color) {
+        if (mProgressBar != null) {
+            mProgressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        }
+        return this;
     }
 
     public String getMessage1() {
@@ -155,11 +180,11 @@ public class YShow extends Dialog {
         return message2;
     }
 
-    public void setProgressBarColor(@ColorInt int color) {
-        if (mProgressBar != null) {
-            mProgressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-        }
+    public synchronized static YShow create(Activity activity) {
+        yDialog = new YShow(activity);
+        return yDialog;
     }
+
 
     public synchronized static void show(Activity activity) {
         show(activity, null, null, true);
@@ -169,36 +194,51 @@ public class YShow extends Dialog {
         show(activity, message, null, true);
     }
 
-    public synchronized static void show(Activity activity, String message, boolean isCancelable) {
-        show(activity, message, null, isCancelable);
+    public synchronized static void show(Activity activity, String message1, String message2) {
+        show(activity, message1, message2, true);
     }
 
-    public synchronized static void show(Activity activity, String message1, String message2, boolean isCancelable) {
-        finish();
-        if (activity == null || activity.isFinishing())
-            return;
-        yDialog = new YShow(activity, message1, message2, isCancelable);
+    public synchronized static void show(Activity activity, String message, boolean canCancel) {
+        show(activity, message, null, canCancel);
+    }
+
+    public synchronized static void show(Activity activity, String message1, String message2, boolean canCancel) {
+        show(activity, message1, message2, canCancel, null);
+    }
+
+    public synchronized static void show(Activity activity, String message1, String message2, boolean canCancel, Boolean fullScreen) {
+        yDialog = new YShow(activity, message1, message2, canCancel);
+        yDialog.setFullScreen(fullScreen);
         yDialog.show();
     }
 
+
     public synchronized static void showUpdate(Activity activity) {
-        showUpdate(activity, null, null, true);
+        showUpdate(activity, null, null, true, null);
     }
 
     public synchronized static void showUpdate(Activity activity, String message) {
-        showUpdate(activity, message, null, true);
+        showUpdate(activity, message, null, true, null);
     }
 
-    public synchronized static void showUpdate(Activity activity, String message, boolean isCancelable) {
-        showUpdate(activity, message, null, isCancelable);
+    public synchronized static void showUpdate(Activity activity, String message1, String message2) {
+        showUpdate(activity, message1, message2, true, null);
     }
 
-    public synchronized static void showUpdate(Activity activity, String message1, String message2, boolean isCancelable) {
+    public synchronized static void showUpdate(Activity activity, String message, boolean canCancel) {
+        showUpdate(activity, message, null, canCancel, null);
+    }
+
+    public synchronized static void showUpdate(Activity activity, String message1, String message2, boolean canCancel) {
+        showUpdate(activity, message1, message2, canCancel, null);
+    }
+
+    public synchronized static void showUpdate(Activity activity, String message1, String message2, boolean canCancel, Boolean fullScreen) {
         if (isShow()) {
             setMessage(message1);
             setMessageOther(message2);
         } else {
-            show(activity, message1, message2, isCancelable);
+            show(activity, message1, message2, canCancel, fullScreen);
         }
     }
 
@@ -221,10 +261,18 @@ public class YShow extends Dialog {
         }
     }
 
-    public synchronized static void setCancel(boolean isCancelable) {
+    public synchronized static void setCancel(boolean canCancel) {
         if (yDialog != null) {
-            yDialog.setCancelable(isCancelable);// 是否允许按返回键
+            yDialog.setCancelable(canCancel);// 是否允许按返回键
         }
+    }
+
+    public static boolean isDefaultFullScreen() {
+        return defaultFullScreen;
+    }
+
+    public static void setDefaultFullScreen(boolean defaultFullScreen) {
+        YShow.defaultFullScreen = defaultFullScreen;
     }
 
     /**
@@ -271,13 +319,21 @@ public class YShow extends Dialog {
 
     @Override
     public void show() {
-        //主要作用是焦点失能和焦点恢复，保证在弹出dialog时不会弹出虚拟按键且事件不会穿透。
-        if (this.getWindow() != null) {
-            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-            this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        if (activity == null || activity.isFinishing())
+            return;
+        finish();
+        if (fullScreen == null) fullScreen = defaultFullScreen;
+        if (fullScreen) {
+            //主要作用是焦点失能和焦点恢复，保证在弹出dialog时不会弹出虚拟按键且事件不会穿透。
+            if (this.getWindow() != null) {
+                this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+                this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                super.show();
+                this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            }
+        } else {
             super.show();
-            this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
     }
 }

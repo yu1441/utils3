@@ -1,6 +1,7 @@
 package com.yujing.kotlinapp.activity.page08
 
 
+import com.yujing.contract.YListener
 import com.yujing.kotlinapp.R
 import com.yujing.kotlinapp.activity.BaseActivity
 import com.yujing.utils.YTts
@@ -15,13 +16,17 @@ class Activity0801 : BaseActivity() {
     override fun initView() {
         button1.setOnClickListener { 阻断播放() }
         button2.setOnClickListener { 队列播放()}
-        button3.setOnClickListener { }
+        button3.setOnClickListener { 停止();}
         button4.setOnClickListener { }
         button5.setOnClickListener { }
         button6.setOnClickListener { }
         button7.setOnClickListener { }
         button8.setOnClickListener { }
-        yTts=YTts(this)
+        yTts=YTts(this, YListener { value -> show("""TTS：$value""")  })
+    }
+
+    private fun 停止() {
+        yTts?.onStop()
     }
 
     private fun 队列播放() {
