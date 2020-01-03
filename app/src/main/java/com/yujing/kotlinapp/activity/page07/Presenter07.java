@@ -151,6 +151,6 @@ public class Presenter07<T> {
     public void getTest2(Activity activity) {
 //        YShow.create(activity).setMessage1("11111").setMessage2("22").setCanCancel(true).setFullScreen(false).show();
         YShow.setDefaultFullScreen(true);
-        YShow.show(activity,"1111","22222",false,false);
+        YShow.show(activity,"测试","全屏测试",true,true);
     }
 }
